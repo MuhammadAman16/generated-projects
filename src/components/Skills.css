@@ -1,0 +1,13 @@
+.Skills {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.Skills ul {
+  list-style: none;
+  padding: 0;
+}
+
+.Skills ul li {
+  margin: 5px 0;
+}
