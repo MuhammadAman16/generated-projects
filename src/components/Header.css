@@ -1,5 +1,5 @@
 .Header {
-  background-color: #282c34;
+  background-color: #121212; /* Darker header background */
   padding: 20px;
   color: white;
 }
@@ -15,6 +15,6 @@
 }
 
 .Header nav ul li a {
-  color: white;
+  color: #bb86fc; /* Light purple for navigation links */
   text-decoration: none;
 }
