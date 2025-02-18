@@ -1,8 +1,9 @@
 .Contact {
   padding: 20px;
+  background-color: #1e1e1e; /* Darker background for Contact section */
 }
 
 .Contact a {
   color: #61dafb;
-  text-decoration: none;
+  color: #bb86fc; /* Light purple for links */
 }
