@@ -1,5 +1,6 @@
 .Projects {
   padding: 20px;
+  background-color: #1e1e1e; /* Darker background for Projects section */
 }
 
 .project-list {
@@ -12,4 +13,4 @@
   margin: 10px;
   padding: 10px;
   border: 1px solid #ccc;
-}
+  border: 1px solid #333; /* Darker border for project items */
