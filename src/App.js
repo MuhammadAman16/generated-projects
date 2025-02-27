@@ -10,11 +10,11 @@ function App() {
   return (
     <Router>
       <Header />
-      <Switch>
-        <Route path="/" exact component={ShoeList} />
-        <Route path="/shoe/:id" component={ShoeDetail} />
-        <Route path="/cart" component={Cart} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<ShoeList />} />
+        <Route path="/shoe/:id" element={<ShoeDetail />} />
+        <Route path="/cart" element={<Cart />} />
+      </Routes>
       <Footer />
     </Router>
   );
