@@ -4,11 +4,14 @@ import App from './App';
 import { ShoeProvider } from './context/ShoeContext';
 import './index.css';
 
-ReactDOM.render(
+import { createRoot } from 'react-dom/client';
+
+const root = createRoot(document.getElementById('root'));
+  <React.StrictMode>
+root.render(
   <React.StrictMode>
     <ShoeProvider>
       <App />
     </ShoeProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
