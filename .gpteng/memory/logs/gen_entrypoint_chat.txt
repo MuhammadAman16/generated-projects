@@ -1,0 +1,341 @@
+
+2025-02-27T14:35:41.457501
+================================ System Message ================================
+
+You will get information about a codebase that is currently on disk in the current folder.
+The user will ask you to write a script that runs the code in a specific way.
+You will answer with code blocks that include all the necessary terminal commands.
+Do not install globally. Do not use sudo.
+Do not explain the code, just give the commands.
+Do not use placeholders, use example values (like . for a folder argument) if necessary.
+
+
+================================ Human Message =================================
+
+
+        Make a unix script that
+        a) installs dependencies
+        b) runs all necessary parts of the codebase (in parallel if necessary)
+        
+Information about the codebase:
+
+```
+File: package.json
+1 {
+2   "name": "shoe-store",
+3   "version": "1.0.0",
+4   "description": "A modern React shoe store application",
+5   "main": "src/index.js",
+6   "scripts": {
+7     "start": "react-scripts start",
+8     "build": "react-scripts build",
+9     "test": "react-scripts test",
+10     "eject": "react-scripts eject"
+11   },
+12   "dependencies": {
+13     "react": "^18.0.0",
+14     "react-dom": "^18.0.0",
+15     "react-scripts": "5.0.0",
+16     "styled-components": "^5.3.3",
+17     "axios": "^0.24.0"
+18   },
+19   "devDependencies": {
+20     "@testing-library/react": "^12.1.2",
+21     "@testing-library/jest-dom": "^5.16.1"
+22   },
+23   "browserslist": {
+24     "production": [
+25       ">0.2%",
+26       "not dead",
+27       "not op_mini all"
+28     ],
+29     "development": [
+30       "last 1 chrome version",
+31       "last 1 firefox version",
+32       "last 1 safari version"
+33     ]
+34   }
+35 }
+
+File: src/index.js
+1 import React from 'react';
+2 import ReactDOM from 'react-dom';
+3 import App from './App';
+4 import { ShoeProvider } from './context/ShoeContext';
+5 import './index.css';
+6 
+7 ReactDOM.render(
+8   <React.StrictMode>
+9     <ShoeProvider>
+10       <App />
+11     </ShoeProvider>
+12   </React.StrictMode>,
+13   document.getElementById('root')
+14 );
+
+File: src/App.js
+1 import React from 'react';
+2 import Header from './components/Header';
+3 import ShoeList from './components/ShoeList';
+4 import Cart from './components/Cart';
+5 import Footer from './components/Footer';
+6 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+7 import ShoeDetail from './components/ShoeDetail';
+8 
+9 function App() {
+10   return (
+11     <Router>
+12       <Header />
+13       <Switch>
+14         <Route path="/" exact component={ShoeList} />
+15         <Route path="/shoe/:id" component={ShoeDetail} />
+16         <Route path="/cart" component={Cart} />
+17       </Switch>
+18       <Footer />
+19     </Router>
+20   );
+21 }
+22 
+23 export default App;
+
+File: src/components/Header.js
+1 import React from 'react';
+2 import { Link } from 'react-router-dom';
+3 import { useShoeContext } from '../context/ShoeContext';
+4 import styled from 'styled-components';
+5 
+6 const HeaderContainer = styled.header`
+7   display: flex;
+8   justify-content: space-between;
+9   padding: 1rem;
+10   background-color: #333;
+11   color: #fff;
+12 `;
+13 
+14 function Header() {
+15   const { cart } = useShoeContext();
+16 
+17   return (
+18     <HeaderContainer>
+19       <h1>Shoe Store</h1>
+20       <nav>
+21         <Link to="/">Home</Link>
+22         <Link to="/cart">Cart ({cart.length})</Link>
+23       </nav>
+24     </HeaderContainer>
+25   );
+26 }
+27 
+28 export default Header;
+
+File: src/components/ShoeList.js
+1 import React, { useEffect } from 'react';
+2 import { useShoeContext } from '../context/ShoeContext';
+3 import { fetchShoes } from '../services/api';
+4 import styled from 'styled-components';
+5 import { Link } from 'react-router-dom';
+6 
+7 const ShoeListContainer = styled.div`
+8   display: flex;
+9   flex-wrap: wrap;
+10   justify-content: space-around;
+11   padding: 1rem;
+12 `;
+13 
+14 const ShoeCard = styled.div`
+15   border: 1px solid #ddd;
+16   padding: 1rem;
+17   margin: 1rem;
+18   width: 200px;
+19   text-align: center;
+20 `;
+21 
+22 function ShoeList() {
+23   const { shoes, setShoes } = useShoeContext();
+24 
+25   useEffect(() => {
+26     fetchShoes().then(data => setShoes(data));
+27   }, [setShoes]);
+28 
+29   return (
+30     <ShoeListContainer>
+31       {shoes.map(shoe => (
+32         <ShoeCard key={shoe.id}>
+33           <h2>{shoe.name}</h2>
+34           <p>{shoe.price}</p>
+35           <Link to={`/shoe/${shoe.id}`}>View Details</Link>
+36         </ShoeCard>
+37       ))}
+38     </ShoeListContainer>
+39   );
+40 }
+41 
+42 export default ShoeList;
+
+File: src/components/ShoeDetail.js
+1 import React from 'react';
+2 import { useParams } from 'react-router-dom';
+3 import { useShoeContext } from '../context/ShoeContext';
+4 import styled from 'styled-components';
+5 
+6 const ShoeDetailContainer = styled.div`
+7   padding: 2rem;
+8   text-align: center;
+9 `;
+10 
+11 function ShoeDetail() {
+12   const { id } = useParams();
+13   const { shoes, addToCart } = useShoeContext();
+14   const shoe = shoes.find(shoe => shoe.id === parseInt(id));
+15 
+16   if (!shoe) return <p>Shoe not found</p>;
+17 
+18   return (
+19     <ShoeDetailContainer>
+20       <h1>{shoe.name}</h1>
+21       <p>{shoe.description}</p>
+22       <p>{shoe.price}</p>
+23       <button onClick={() => addToCart(shoe)}>Add to Cart</button>
+24     </ShoeDetailContainer>
+25   );
+26 }
+27 
+28 export default ShoeDetail;
+
+File: src/components/Cart.js
+1 import React from 'react';
+2 import { useShoeContext } from '../context/ShoeContext';
+3 import styled from 'styled-components';
+4 
+5 const CartContainer = styled.div`
+6   padding: 2rem;
+7 `;
+8 
+9 const CartItem = styled.div`
+10   border-bottom: 1px solid #ddd;
+11   padding: 1rem 0;
+12 `;
+13 
+14 function Cart() {
+15   const { cart } = useShoeContext();
+16 
+17   return (
+18     <CartContainer>
+19       <h1>Your Cart</h1>
+20       {cart.length === 0 ? (
+21         <p>Your cart is empty</p>
+22       ) : (
+23         cart.map(item => (
+24           <CartItem key={item.id}>
+25             <h2>{item.name}</h2>
+26             <p>{item.price}</p>
+27           </CartItem>
+28         ))
+29       )}
+30     </CartContainer>
+31   );
+32 }
+33 
+34 export default Cart;
+
+File: src/components/Footer.js
+1 import React from 'react';
+2 import styled from 'styled-components';
+3 
+4 const FooterContainer = styled.footer`
+5   padding: 1rem;
+6   background-color: #333;
+7   color: #fff;
+8   text-align: center;
+9 `;
+10 
+11 function Footer() {
+12   return (
+13     <FooterContainer>
+14       <p>&copy; 2023 Shoe Store. All rights reserved.</p>
+15     </FooterContainer>
+16   );
+17 }
+18 
+19 export default Footer;
+
+File: src/context/ShoeContext.js
+1 import React, { createContext, useContext, useState } from 'react';
+2 
+3 const ShoeContext = createContext();
+4 
+5 export function ShoeProvider({ children }) {
+6   const [shoes, setShoes] = useState([]);
+7   const [cart, setCart] = useState([]);
+8 
+9   const addToCart = (shoe) => {
+10     setCart([...cart, shoe]);
+11   };
+12 
+13   return (
+14     <ShoeContext.Provider value={{ shoes, setShoes, cart, addToCart }}>
+15       {children}
+16     </ShoeContext.Provider>
+17   );
+18 }
+19 
+20 export function useShoeContext() {
+21   return useContext(ShoeContext);
+22 }
+
+File: src/services/api.js
+1 import axios from 'axios';
+2 
+3 export const fetchShoes = async () => {
+4   const response = await axios.get('/api/shoes');
+5   return response.data;
+6 };
+
+File: src/index.css
+1 body {
+2   margin: 0;
+3   font-family: Arial, sans-serif;
+4 }
+5 
+6 a {
+7   color: #61dafb;
+8   text-decoration: none;
+9   margin: 0 1rem;
+10 }
+11 
+12 a:hover {
+13   text-decoration: underline;
+14 }
+
+File: src/__tests__/App.test.js
+1 import React from 'react';
+2 import { render, screen } from '@testing-library/react';
+3 import App from '../App';
+4 import { ShoeProvider } from '../context/ShoeContext';
+5 import { BrowserRouter as Router } from 'react-router-dom';
+6 
+7 test('renders Shoe Store header', () => {
+8   render(
+9     <Router>
+10       <ShoeProvider>
+11         <App />
+12       </ShoeProvider>
+13     </Router>
+14   );
+15   const linkElement = screen.getByText(/Shoe Store/i);
+16   expect(linkElement).toBeInTheDocument();
+17 });
+
+```
+
+================================== Ai Message ==================================
+
+```bash
+#!/bin/bash
+
+# Install dependencies
+npm install
+
+# Run the application
+npm start
+```
