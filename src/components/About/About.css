@@ -47,11 +47,35 @@
   z-index: 0;
 }
 
+.about-skills-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(140px, 200px));
+  gap: 0px 10px;
+  padding: 0;
+  margin: 20px 0 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+.about-skills-list li {
+  position: relative;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  font-family: monospace;
+  font-size: 14px;
+  color: #8892b0;
+}
+
+
 @media (max-width: 768px) {
   .about-content {
     flex-direction: column;
   }
   .about-image-container {
     margin-top: 30px;
+  }
+  .about-skills-list {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    margin: 10px 0 0;
   }
 }
