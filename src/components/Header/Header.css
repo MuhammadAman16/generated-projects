@@ -3,9 +3,9 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
-  transition: all 0.3s ease;
   padding: 20px 0;
+  z-index: 100;
+  transition: all 0.3s ease;
 }
 
 .header.scrolled {
@@ -25,29 +25,36 @@
 }
 
 .logo {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   color: #64ffda;
   cursor: pointer;
 }
 
-.nav-menu ul {
+.desktop-nav ul {
   display: flex;
   list-style: none;
 }
 
-.nav-menu li {
+.desktop-nav ul li {
   margin-left: 30px;
 }
 
-.nav-menu a {
-  font-size: 16px;
+.desktop-nav ul li a {
+  color: #ccd6f6;
+  font-size: 14px;
   font-weight: 500;
-  position: relative;
+  transition: all 0.3s ease;
   cursor: pointer;
+  position: relative;
 }
 
-.nav-menu a::after {
+.desktop-nav ul li a:hover,
+.desktop-nav ul li a.active {
+  color: #64ffda;
+}
+
+.desktop-nav ul li a::after {
   content: '';
   position: absolute;
   bottom: -5px;
@@ -58,63 +65,61 @@
   transition: width 0.3s ease;
 }
 
-.nav-menu a:hover::after {
+.desktop-nav ul li a:hover::after,
+.desktop-nav ul li a.active::after {
   width: 100%;
 }
 
-.contact-link {
-  padding: 10px 15px;
-  border: 1px solid #64ffda;
-  border-radius: 4px;
+.mobile-menu-btn {
+  display: none;
   color: #64ffda;
-  transition: all 0.3s ease;
-}
-
-.contact-link:hover {
-  background-color: rgba(100, 255, 218, 0.1);
-}
-
-.contact-link::after {
-  display: none;
-}
-
-.menu-icon {
-  display: none;
   font-size: 24px;
   cursor: pointer;
-  color: #64ffda;
+}
+
+.mobile-nav {
+  display: none;
 }
 
 @media (max-width: 768px) {
-  .nav-menu {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
-    right: -100%;
+    right: 0;
     width: 70%;
     height: 100vh;
     background-color: #112240;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.5s ease;
-    box-shadow: -10px 0 30px -15px rgba(2, 12, 27, 0.7);
+    padding: 50px 20px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 99;
   }
 
-  .nav-menu.active {
-    right: 0;
+  .mobile-nav.open {
+    transform: translateX(0);
   }
 
-  .nav-menu ul {
-    flex-direction: column;
-    align-items: center;
+  .mobile-nav a {
+    margin: 15px 0;
+    font-size: 18px;
+    color: #ccd6f6;
+    transition: color 0.3s ease;
+    text-align: center;
   }
 
-  .nav-menu li {
-    margin: 20px 0;
-  }
-
-  .menu-icon {
-    display: block;
-    z-index: 1001;
+  .mobile-nav a:hover {
+    color: #64ffda;
   }
 }
