@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
 import './Header.css';
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // Handle scroll event to change header style
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        setIsScrolled(true);
+        setScrolled(true);
       } else {
-        setIsScrolled(false);
+        setScrolled(false);
       }
     };
 
@@ -24,75 +25,70 @@ const Header = () => {
 
   // Toggle mobile menu
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsOpen(!isOpen);
   };
 
-  // Close menu when a link is clicked
+  // Close mobile menu when a link is clicked
   const closeMenu = () => {
-    setIsMenuOpen(false);
+    setIsOpen(false);
   };
+
+  // Navigation links
+  const navLinks = [
+    { name: 'Home', to: 'hero' },
+    { name: 'About', to: 'about' },
+    { name: 'Skills', to: 'skills' },
+    { name: 'Projects', to: 'projects' },
+    { name: 'Contact', to: 'contact' }
+  ];
 
   return (
-    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
-        <div className="logo">
-          <Link to="hero" smooth={true} duration={500}>
-            JD
-          </Link>
-        </div>
+        <motion.div 
+          className="logo"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Link to="hero" smooth={true} duration={500}>JD</Link>
+        </motion.div>
 
-        <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+        {/* Desktop Navigation */}
+        <nav className="desktop-nav">
           <ul>
-            <li>
-              <Link 
-                to="about" 
-                smooth={true} 
-                duration={500} 
-                offset={-70}
-                onClick={closeMenu}
+            {navLinks.map((link, index) => (
+              <motion.li 
+                key={index}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
               >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="skills" 
-                smooth={true} 
-                duration={500} 
-                offset={-70}
-                onClick={closeMenu}
-              >
-                Skills
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="projects" 
-                smooth={true} 
-                duration={500} 
-                offset={-70}
-                onClick={closeMenu}
-              >
-                Projects
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="contact" 
-                smooth={true} 
-                duration={500} 
-                offset={-70}
-                onClick={closeMenu}
-                className="contact-link"
-              >
-                Contact
-              </Link>
-            </li>
+                <Link 
+                  to={link.to} 
+                  smooth={true} 
+                  duration={500} 
+                  offset={-70}
+                  activeClass="active"
+                  spy={true}
+                >
+                  {link.name}
+                </Link>
+              </motion.li>
+            ))}
           </ul>
         </nav>
 
-        <div className="menu-icon" onClick={toggleMenu}>
-          <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+        {/* Mobile Menu Button */}
+        <div className="mobile-menu-btn" onClick={toggleMenu}>
+          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className={`mobile-nav ${isOpen ? 'open' : ''}`}>
+          {navLinks.map((link, index) => (
+            <Link key={index} to={link.to} smooth={true} duration={500} offset={-70} onClick={closeMenu}>{link.name}</Link>
+          ))}
         </div>
       </div>
     </header>
