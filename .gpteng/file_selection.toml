@@ -1,0 +1,20 @@
+# Remove '#' to select a file or turn off linting.
+
+# Linting with BLACK (Python) enhances code suggestions from LLMs. To disable linting, uncomment the relevant option in the linting settings.
+
+# gpt-engineer can only read selected files. Including irrelevant files will degrade performance, cost additional tokens and potentially overflow token limit.
+
+[linting]
+# "linting" = "off"
+
+[files]
+ "index.html" = "selected"
+ "package.json" = "selected"
+# "run.sh" = "selected"
+ "src\\App.css" = "selected"
+ "src\\App.js" = "selected"
+# "src\\components\\Header\\Header.css" = "selected"
+# "src\\components\\Header\\Header.js" = "selected"
+ "src\\index.css" = "selected"
+ "src\\index.js" = "selected"
+# "src\\reportWebVitals.js" = "selected"
