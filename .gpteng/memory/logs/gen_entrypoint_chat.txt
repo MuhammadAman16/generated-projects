@@ -1,0 +1,510 @@
+
+2025-03-13T15:25:40.089929
+================================ System Message ================================
+
+You will get information about a codebase that is currently on disk in the current folder.
+The user will ask you to write a script that runs the code in a specific way.
+You will answer with code blocks that include all the necessary terminal commands.
+Do not install globally. Do not use sudo.
+Do not explain the code, just give the commands.
+Do not use placeholders, use example values (like . for a folder argument) if necessary.
+
+
+================================ Human Message =================================
+
+
+        Make a unix script that
+        a) installs dependencies
+        b) runs all necessary parts of the codebase (in parallel if necessary)
+        
+Information about the codebase:
+
+```
+File: index.html
+1 <!DOCTYPE html>
+2 <html lang="en">
+3   <head>
+4     <meta charset="utf-8" />
+5     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+6     <meta name="viewport" content="width=device-width, initial-scale=1" />
+7     <meta name="theme-color" content="#000000" />
+8     <meta
+9       name="description"
+10       content="MERN Stack Developer Portfolio"
+11     />
+12     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+13     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+14     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+15     <title>John Doe | MERN Stack Developer</title>
+16   </head>
+17   <body>
+18     <noscript>You need to enable JavaScript to run this app.</noscript>
+19     <div id="root"></div>
+20   </body>
+21 </html>
+
+File: package.json
+1 {
+2   "name": "mern-portfolio",
+3   "version": "0.1.0",
+4   "private": true,
+5   "dependencies": {
+6     "@emailjs/browser": "^3.11.0",
+7     "@fortawesome/fontawesome-svg-core": "^6.4.2",
+8     "@fortawesome/free-brands-svg-icons": "^6.4.2",
+9     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+10     "@fortawesome/react-fontawesome": "^0.2.0",
+11     "@testing-library/jest-dom": "^5.17.0",
+12     "@testing-library/react": "^13.4.0",
+13     "@testing-library/user-event": "^13.5.0",
+14     "framer-motion": "^10.16.4",
+15     "react": "^18.2.0",
+16     "react-dom": "^18.2.0",
+17     "react-scripts": "5.0.1",
+18     "react-scroll": "^1.8.9",
+19     "react-toastify": "^9.1.3",
+20     "web-vitals": "^2.1.4"
+21   },
+22   "scripts": {
+23     "start": "react-scripts start",
+24     "build": "react-scripts build",
+25     "test": "react-scripts test",
+26     "eject": "react-scripts eject"
+27   },
+28   "eslintConfig": {
+29     "extends": [
+30       "react-app",
+31       "react-app/jest"
+32     ]
+33   },
+34   "browserslist": {
+35     "production": [
+36       ">0.2%",
+37       "not dead",
+38       "not op_mini all"
+39     ],
+40     "development": [
+41       "last 1 chrome version",
+42       "last 1 firefox version",
+43       "last 1 safari version"
+44     ]
+45   }
+46 }
+
+File: src/index.js
+1 import React from 'react';
+2 import ReactDOM from 'react-dom/client';
+3 import './index.css';
+4 import App from './App';
+5 import reportWebVitals from './reportWebVitals';
+6 
+7 const root = ReactDOM.createRoot(document.getElementById('root'));
+8 root.render(
+9   <React.StrictMode>
+10     <App />
+11   </React.StrictMode>
+12 );
+13 
+14 // If you want to start measuring performance in your app, pass a function
+15 // to log results (for example: reportWebVitals(console.log))
+16 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+17 reportWebVitals();
+
+File: src/index.css
+1 * {
+2   margin: 0;
+3   padding: 0;
+4   box-sizing: border-box;
+5 }
+6 
+7 body {
+8   font-family: 'Poppins', sans-serif;
+9   -webkit-font-smoothing: antialiased;
+10   -moz-osx-font-smoothing: grayscale;
+11   background-color: #0a192f;
+12   color: #ccd6f6;
+13 }
+14 
+15 html {
+16   scroll-behavior: smooth;
+17 }
+18 
+19 a {
+20   text-decoration: none;
+21   color: inherit;
+22 }
+23 
+24 button, input, textarea {
+25   font-family: 'Poppins', sans-serif;
+26 }
+27 
+28 ::-webkit-scrollbar {
+29   width: 10px;
+30 }
+31 
+32 ::-webkit-scrollbar-track {
+33   background: #0a192f;
+34 }
+35 
+36 ::-webkit-scrollbar-thumb {
+37   background: #64ffda;
+38   border-radius: 5px;
+39 }
+40 
+41 ::-webkit-scrollbar-thumb:hover {
+42   background: #4cd3ac;
+43 }
+
+File: src/reportWebVitals.js
+1 const reportWebVitals = onPerfEntry => {
+2   if (onPerfEntry && onPerfEntry instanceof Function) {
+3     import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+4       getCLS(onPerfEntry);
+5       getFID(onPerfEntry);
+6       getFCP(onPerfEntry);
+7       getLCP(onPerfEntry);
+8       getTTFB(onPerfEntry);
+9     });
+10   }
+11 };
+12 
+13 export default reportWebVitals;
+
+File: src/App.js
+1 import React from 'react';
+2 import { ToastContainer } from 'react-toastify';
+3 import 'react-toastify/dist/ReactToastify.css';
+4 import Header from './components/Header/Header';
+5 import Hero from './components/Hero/Hero';
+6 import About from './components/About/About';
+7 import Skills from './components/Skills/Skills';
+8 import Projects from './components/Projects/Projects';
+9 import Contact from './components/Contact/Contact';
+10 import Footer from './components/Footer/Footer';
+11 import './App.css';
+12 
+13 function App() {
+14   return (
+15     <div className="app">
+16       <Header />
+17       <main>
+18         <Hero />
+19         <About />
+20         <Skills />
+21         <Projects />
+22         <Contact />
+23       </main>
+24       <Footer />
+25       <ToastContainer position="bottom-right" theme="dark" />
+26     </div>
+27   );
+28 }
+29 
+30 export default App;
+
+File: src/App.css
+1 .app {
+2   min-height: 100vh;
+3   display: flex;
+4   flex-direction: column;
+5 }
+6 
+7 main {
+8   flex: 1;
+9 }
+10 
+11 section {
+12   padding: 100px 0;
+13   max-width: 1200px;
+14   margin: 0 auto;
+15   padding-left: 20px;
+16   padding-right: 20px;
+17 }
+18 
+19 .section-title {
+20   font-size: 32px;
+21   font-weight: 700;
+22   margin-bottom: 50px;
+23   position: relative;
+24   display: inline-block;
+25 }
+26 
+27 .section-title::after {
+28   content: '';
+29   position: absolute;
+30   bottom: -10px;
+31   left: 0;
+32   width: 70%;
+33   height: 3px;
+34   background-color: #64ffda;
+35 }
+36 
+37 .highlight {
+38   color: #64ffda;
+39 }
+40 
+41 .btn {
+42   background-color: transparent;
+43   color: #64ffda;
+44   border: 1px solid #64ffda;
+45   border-radius: 4px;
+46   padding: 12px 20px;
+47   font-size: 14px;
+48   font-weight: 500;
+49   cursor: pointer;
+50   transition: all 0.3s ease;
+51 }
+52 
+53 .btn:hover {
+54   background-color: rgba(100, 255, 218, 0.1);
+55 }
+56 
+57 @media (max-width: 768px) {
+58   section {
+59     padding: 70px 0;
+60   }
+61   
+62   .section-title {
+63     font-size: 28px;
+64   }
+65 }
+
+File: src/components/Header/Header.js
+1 import React, { useState, useEffect } from 'react';
+2 import { Link } from 'react-scroll';
+3 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+4 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+5 import './Header.css';
+6 
+7 const Header = () => {
+8   const [isScrolled, setIsScrolled] = useState(false);
+9   const [isMenuOpen, setIsMenuOpen] = useState(false);
+10 
+11   // Handle scroll event to change header style
+12   useEffect(() => {
+13     const handleScroll = () => {
+14       if (window.scrollY > 50) {
+15         setIsScrolled(true);
+16       } else {
+17         setIsScrolled(false);
+18       }
+19     };
+20 
+21     window.addEventListener('scroll', handleScroll);
+22     return () => window.removeEventListener('scroll', handleScroll);
+23   }, []);
+24 
+25   // Toggle mobile menu
+26   const toggleMenu = () => {
+27     setIsMenuOpen(!isMenuOpen);
+28   };
+29 
+30   // Close menu when a link is clicked
+31   const closeMenu = () => {
+32     setIsMenuOpen(false);
+33   };
+34 
+35   return (
+36     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+37       <div className="header-container">
+38         <div className="logo">
+39           <Link to="hero" smooth={true} duration={500}>
+40             JD
+41           </Link>
+42         </div>
+43 
+44         <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+45           <ul>
+46             <li>
+47               <Link 
+48                 to="about" 
+49                 smooth={true} 
+50                 duration={500} 
+51                 offset={-70}
+52                 onClick={closeMenu}
+53               >
+54                 About
+55               </Link>
+56             </li>
+57             <li>
+58               <Link 
+59                 to="skills" 
+60                 smooth={true} 
+61                 duration={500} 
+62                 offset={-70}
+63                 onClick={closeMenu}
+64               >
+65                 Skills
+66               </Link>
+67             </li>
+68             <li>
+69               <Link 
+70                 to="projects" 
+71                 smooth={true} 
+72                 duration={500} 
+73                 offset={-70}
+74                 onClick={closeMenu}
+75               >
+76                 Projects
+77               </Link>
+78             </li>
+79             <li>
+80               <Link 
+81                 to="contact" 
+82                 smooth={true} 
+83                 duration={500} 
+84                 offset={-70}
+85                 onClick={closeMenu}
+86                 className="contact-link"
+87               >
+88                 Contact
+89               </Link>
+90             </li>
+91           </ul>
+92         </nav>
+93 
+94         <div className="menu-icon" onClick={toggleMenu}>
+95           <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+96         </div>
+97       </div>
+98     </header>
+99   );
+100 };
+101 
+102 export default Header;
+
+File: src/components/Header/Header.css
+1 .header {
+2   position: fixed;
+3   top: 0;
+4   left: 0;
+5   width: 100%;
+6   z-index: 1000;
+7   transition: all 0.3s ease;
+8   padding: 20px 0;
+9 }
+10 
+11 .header.scrolled {
+12   background-color: rgba(10, 25, 47, 0.9);
+13   backdrop-filter: blur(10px);
+14   box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+15   padding: 15px 0;
+16 }
+17 
+18 .header-container {
+19   max-width: 1200px;
+20   margin: 0 auto;
+21   display: flex;
+22   justify-content: space-between;
+23   align-items: center;
+24   padding: 0 20px;
+25 }
+26 
+27 .logo {
+28   font-size: 28px;
+29   font-weight: 700;
+30   color: #64ffda;
+31   cursor: pointer;
+32 }
+33 
+34 .nav-menu ul {
+35   display: flex;
+36   list-style: none;
+37 }
+38 
+39 .nav-menu li {
+40   margin-left: 30px;
+41 }
+42 
+43 .nav-menu a {
+44   font-size: 16px;
+45   font-weight: 500;
+46   position: relative;
+47   cursor: pointer;
+48 }
+49 
+50 .nav-menu a::after {
+51   content: '';
+52   position: absolute;
+53   bottom: -5px;
+54   left: 0;
+55   width: 0;
+56   height: 2px;
+57   background-color: #64ffda;
+58   transition: width 0.3s ease;
+59 }
+60 
+61 .nav-menu a:hover::after {
+62   width: 100%;
+63 }
+64 
+65 .contact-link {
+66   padding: 10px 15px;
+67   border: 1px solid #64ffda;
+68   border-radius: 4px;
+69   color: #64ffda;
+70   transition: all 0.3s ease;
+71 }
+72 
+73 .contact-link:hover {
+74   background-color: rgba(100, 255, 218, 0.1);
+75 }
+76 
+77 .contact-link::after {
+78   display: none;
+79 }
+80 
+81 .menu-icon {
+82   display: none;
+83   font-size: 24px;
+84   cursor: pointer;
+85   color: #64ffda;
+86 }
+87 
+88 @media (max-width: 768px) {
+89   .nav-menu {
+90     position: fixed;
+91     top: 0;
+92     right: -100%;
+93     width: 70%;
+94     height: 100vh;
+95     background-color: #112240;
+96     display: flex;
+97     align-items: center;
+98     justify-content: center;
+99     transition: all 0.5s ease;
+100     box-shadow: -10px 0 30px -15px rgba(2, 12, 27, 0.7);
+101   }
+102 
+103   .nav-menu.active {
+104     right: 0;
+105   }
+106 
+107   .nav-menu ul {
+108     flex-direction: column;
+109     align-items: center;
+110   }
+111 
+112   .nav-menu li {
+113     margin: 20px 0;
+114   }
+115 
+116   .menu-icon {
+117     display: block;
+118     z-index: 1001;
+119   }
+120 }
+
+```
+
+================================== Ai Message ==================================
+
+```bash
+#!/bin/bash
+
+# Install dependencies
+npm install
+
+# Run the React application
+npm start
+```
