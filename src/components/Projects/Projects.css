@@ -1,0 +1,129 @@
+.projects {
+  display: flex;
+  flex-direction: column;
+}
+
+.projects-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.project-card {
+  background-color: #112240;
+  border-radius: 5px;
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+}
+
+.project-card:hover .project-image {
+  opacity: 0.1;
+}
+
+.project-card:hover .project-content {
+  opacity: 1;
+}
+
+.project-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.project-folder {
+  color: #64ffda;
+  font-size: 40px;
+}
+
+.project-links {
+  display: flex;
+  gap: 15px;
+}
+
+.project-link {
+  color: #a8b2d1;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.project-link:hover {
+  color: #64ffda;
+}
+
+.project-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #e6f1ff;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
+}
+
+.project-card:hover .project-title {
+  color: #64ffda;
+}
+
+.project-description {
+  color: #a8b2d1;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.project-tech-item {
+  color: #8892b0;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.featured-project {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 10px;
+  margin-bottom: 100px;
+  position: relative;
+}
+
+.featured-project-image {
+  grid-column: 1 / 8;
+  grid-row: 1 / -1;
+  position: relative;
+  height: 400px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.featured-project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1);
+  transition: filter 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .featured-project {
+    display: block;
+  }
+  .featured-project-image {
+    height: 300px;
+  }
+}
