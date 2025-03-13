@@ -686,3 +686,1078 @@ Skipping invalid file reference: /dev/null
 DEBUG: Checking files after salvage_correct_hunks...
 FINAL FILES DICT: ['index.html', 'package.json', 'src\\\\App.css', 'src\\\\App.js', 'src\\\\index.css', 'src\\\\index.js', 'src/components/Header/Header.js', 'src/components/Header/Header.css', 'src/components/Hero/Hero.js', 'src/components/Hero/Hero.css']
 
+
+2025-03-13T17:32:18.399095
+UPLOADED FILES:
+File: index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="MERN Stack Developer Portfolio"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>John Doe | MERN Stack Developer</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+File: package.json
+{
+  "name": "mern-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emailjs/browser": "^3.11.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "react-scroll": "^1.8.9",
+    "react-toastify": "^9.1.3",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+File: src\\App.css
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+section {
+  padding: 100px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 50px;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 70%;
+  height: 3px;
+  background-color: #64ffda;
+}
+
+.highlight {
+  color: #64ffda;
+}
+
+.btn {
+  background-color: transparent;
+  color: #64ffda;
+  border: 1px solid #64ffda;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: rgba(100, 255, 218, 0.1);
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 70px 0;
+  }
+  
+  .section-title {
+    font-size: 28px;
+  }
+}
+File: src\\App.js
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Header from './components/Header/Header';
+import Hero from './components/Hero/Hero';
+import About from './components/About/About';
+import Skills from './components/Skills/Skills';
+import Projects from './components/Projects/Projects';
+import Contact from './components/Contact/Contact';
+import Footer from './components/Footer/Footer';
+import './App.css';
+
+function App() {
+  return (
+    <div className="app">
+      <Header />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </main>
+      <Footer />
+      <ToastContainer position="bottom-right" theme="dark" />
+    </div>
+  );
+}
+
+export default App;
+File: src\\components\\Header\\Header.css
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.header.scrolled {
+  background-color: rgba(10, 25, 47, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+  padding: 15px 0;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #64ffda;
+  cursor: pointer;
+}
+
+.desktop-nav ul {
+  display: flex;
+  list-style: none;
+}
+
+.desktop-nav ul li {
+  margin-left: 30px;
+}
+
+.desktop-nav ul li a {
+  color: #ccd6f6;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.desktop-nav ul li a:hover,
+.desktop-nav ul li a.active {
+  color: #64ffda;
+}
+
+.desktop-nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #64ffda;
+  transition: width 0.3s ease;
+}
+
+.desktop-nav ul li a:hover::after,
+.desktop-nav ul li a.active::after {
+  width: 100%;
+}
+
+.mobile-menu-btn {
+  display: none;
+  color: #64ffda;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 70%;
+    height: 100vh;
+    background-color: #112240;
+    padding: 50px 20px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 99;
+  }
+
+  .mobile-nav.open {
+    transform: translateX(0);
+  }
+
+  .mobile-nav a {
+    margin: 15px 0;
+    font-size: 18px;
+    color: #ccd6f6;
+    transition: color 0.3s ease;
+    text-align: center;
+  }
+
+  .mobile-nav a:hover {
+    color: #64ffda;
+  }
+}
+File: src\\components\\Header\\Header.js
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-scroll';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
+import './Header.css';
+
+const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Handle scroll event to change header style
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Toggle mobile menu
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Close mobile menu when a link is clicked
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
+  // Navigation links
+  const navLinks = [
+    { name: 'Home', to: 'hero' },
+    { name: 'About', to: 'about' },
+    { name: 'Skills', to: 'skills' },
+    { name: 'Projects', to: 'projects' },
+    { name: 'Contact', to: 'contact' }
+  ];
+
+  return (
+    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+      <div className="header-container">
+        <motion.div 
+          className="logo"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Link to="hero" smooth={true} duration={500}>JD</Link>
+        </motion.div>
+
+        {/* Desktop Navigation */}
+        <nav className="desktop-nav">
+          <ul>
+            {navLinks.map((link, index) => (
+              <motion.li 
+                key={index}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <Link 
+                  to={link.to} 
+                  smooth={true} 
+                  duration={500} 
+                  offset={-70}
+                  activeClass="active"
+                  spy={true}
+                >
+                  {link.name}
+                </Link>
+              </motion.li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <div className="mobile-menu-btn" onClick={toggleMenu}>
+          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className={`mobile-nav ${isOpen ? 'open' : ''}`}>
+          {navLinks.map((link, index) => (
+            <Link key={index} to={link.to} smooth={true} duration={500} offset={-70} onClick={closeMenu}>{link.name}</Link>
+          ))}
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
+File: src\\components\\Hero\\Hero.css
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-greeting {
+  color: #64ffda;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.hero-name {
+  font-size: 72px;
+  font-weight: 700;
+  color: #e6f1ff;
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+
+.hero-title {
+  font-size: 60px;
+  font-weight: 600;
+  color: #8892b0;
+  margin-bottom: 30px;
+  line-height: 1.1;
+}
+
+.hero-description {
+  font-size: 18px;
+  color: #8892b0;
+  margin-bottom: 50px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.hero-btn {
+  padding: 15px 25px;
+  font-size: 16px;
+}
+
+.scroll-down {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #64ffda;
+  font-size: 24px;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-name {
+    font-size: 50px;
+  }
+  
+  .hero-title {
+    font-size: 40px;
+  }
+  
+  .hero-description {
+    font-size: 16px;
+  }
+}
+File: src\\components\\Hero\\Hero.js
+import React from 'react';
+import { Link } from 'react-scroll';
+import { motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import './Hero.css';
+
+const Hero = () => {
+  return (
+    <section id="hero" className="hero">
+      <div className="hero-content">
+        <motion.p 
+          className="hero-greeting"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Hi, my name is
+        </motion.p>
+        
+        <motion.h1 
+          className="hero-name"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          John Doe.
+        </motion.h1>
+        
+        <motion.h2 
+          className="hero-title"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          I build things for the web.
+        </motion.h2>
+        
+        <motion.p className="hero-description" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.6 }}>
+          I'm a <span className="highlight">MERN Stack Developer</span> specializing in building exceptional digital experiences. Currently, I'm focused on building accessible, human-centered products.
+        </motion.p>
+        
+        <motion.button className="btn hero-btn" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.8 }}><Link to="projects" smooth={true} duration={500} offset={-70}>View My Work</Link></motion.button>
+      </div>
+      <div className="scroll-down"><Link to="about" smooth={true} duration={500} offset={-70}><FontAwesomeIcon icon={faArrowDown} bounce /></Link></div>
+    </section>
+  );
+};
+
+export default Hero;
+File: src\\index.css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0a192f;
+  color: #ccd6f6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, textarea {
+  font-family: 'Poppins', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a192f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #64ffda;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4cd3ac;
+}
+File: src\\index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+PROMPT:
+add code for remaining elements also
+
+2025-03-13T17:33:09.065973
+
+CONSOLE OUTPUT:
+DEBUG: Checking available files before improvement...
+FILES PRESENT: ['index.html', 'package.json', 'src\\\\App.css', 'src\\\\App.js', 'src\\\\components\\\\Header\\\\Header.css', 'src\\\\components\\\\Header\\\\Header.js', 'src\\\\components\\\\Hero\\\\Hero.css', 'src\\\\components\\\\Hero\\\\Hero.js', 'src\\\\index.css', 'src\\\\index.js']
+I'll implement the remaining components for the MERN Stack Developer Portfolio. Let's start with the About, Skills, Projects, Contact, and Footer components.
+
+```diff
+--- /dev/null
++++ src/components/About/About.css
+@@ -0,0 +1,56 @@
++.about {
++  display: flex;
++  flex-direction: column;
++}
++
++.about-content {
++  display: flex;
++  justify-content: space-between;
++  align-items: flex-start;
++  gap: 50px;
++}
++
++.about-text {
++  flex: 1;
++}
++
++.about-description {
++  color: #8892b0;
++  font-size: 16px;
++  line-height: 1.7;
++  margin-bottom: 20px;
++}
++
++.about-image-container {
++  flex: 0 0 300px;
++  position: relative;
++}
++
++.about-image {
++  width: 100%;
++  height: auto;
++  border-radius: 5px;
++  filter: grayscale(100%) contrast(1);
++  transition: all 0.3s ease;
++  position: relative;
++  z-index: 1;
++}
++
++.about-image-border {
++  position: absolute;
++  top: 15px;
++  left: 15px;
++  width: 100%;
++  height: 100%;
++  border: 2px solid #64ffda;
++  border-radius: 5px;
++  z-index: 0;
++}
++
++@media (max-width: 768px) {
++  .about-content {
++    flex-direction: column;
++  }
++  .about-image-container {
++    margin-top: 30px;
++  }
++}
+```
+
+```diff
+--- /dev/null
++++ src/components/About/About.js
+@@ -0,0 +1,54 @@
++import React from 'react';
++import { motion } from 'framer-motion';
++import './About.css';
++import profileImage from '../../assets/profile.jpg';
++
++const About = () => {
++  return (
++    <section id="about" className="about">
++      <motion.h2 
++        className="section-title"
++        initial={{ opacity: 0, y: 20 }}
++        whileInView={{ opacity: 1, y: 0 }}
++        viewport={{ once: true }}
++        transition={{ duration: 0.5 }}
++      >
++        About Me
++      </motion.h2>
++      
++      <div className="about-content">
++        <motion.div 
++          className="about-text"
++          initial={{ opacity: 0, x: -50 }}
++          whileInView={{ opacity: 1, x: 0 }}
++          viewport={{ once: true }}
++          transition={{ duration: 0.5, delay: 0.2 }}
++        >
++          <p className="about-description">
++            Hello! I'm John, a passionate MERN stack developer based in New York City. I enjoy creating things that live on the internet, whether that be websites, applications, or anything in between.
++          </p>
++          <p className="about-description">
++            My interest in web development started back in 2015 when I decided to try creating a custom Tumblr theme — turns out hacking together a custom reblog button taught me a lot about HTML & CSS!
++          </p>
++          <p className="about-description">
++            Fast-forward to today, and I've had the privilege of working at a start-up, a large corporation, and a student-led design studio. My main focus these days is building accessible, inclusive products and digital experiences for a variety of clients.
++          </p>
++          <p className="about-description">
++            When I'm not at the computer, I'm usually rock climbing, hiking, or exploring new coffee shops in the city.
++          </p>
++        </motion.div>
++        
++        <motion.div 
++          className="about-image-container"
++          initial={{ opacity: 0, x: 50 }}
++          whileInView={{ opacity: 1, x: 0 }}
++          viewport={{ once: true }}
++          transition={{ duration: 0.5, delay: 0.4 }}
++        >
++          <img src={profileImage} alt="John Doe" className="about-image" />
++          <div className="about-image-border"></div>
++        </motion.div>
++      </div>
++    </section>
++  );
++};
++
++export default About;
+```
+
+```diff
+--- /dev/null
++++ src/components/Skills/Skills.css
+@@ -0,0 +1,75 @@
++.skills {
++  display: flex;
++  flex-direction: column;
++}
++
++.skills-container {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 30px;
++}
++
++.skills-category {
++  flex: 1;
++  min-width: 250px;
++}
++
++.skills-category-title {
++  font-size: 20px;
++  font-weight: 600;
++  margin-bottom: 20px;
++  color: #e6f1ff;
++  position: relative;
++  display: inline-block;
++}
++
++.skills-category-title::after {
++  content: '';
++  position: absolute;
++  bottom: -5px;
++  left: 0;
++  width: 40px;
++  height: 2px;
++  background-color: #64ffda;
++}
++
++.skills-list {
++  list-style: none;
++}
++
++.skill-item {
++  margin-bottom: 15px;
++  display: flex;
++  align-items: center;
++}
++
++.skill-icon {
++  color: #64ffda;
++  margin-right: 10px;
++  font-size: 14px;
++}
++
++.skill-name {
++  color: #8892b0;
++  font-size: 16px;
++  transition: color 0.3s ease;
++}
++
++.skill-item:hover .skill-name {
++  color: #64ffda;
++}
++
++.skill-progress-container {
++  width: 100%;
++  height: 6px;
++  background-color: #112240;
++  border-radius: 3px;
++  margin-top: 5px;
++}
++
++.skill-progress-bar {
++  height: 100%;
++  border-radius: 3px;
++  background-color: #64ffda;
++  transition: width 1s ease;
++}
+```
+
+```diff
+--- /dev/null
++++ src/components/Skills/Skills.js
+@@ -0,0 +1,121 @@
++import React from 'react';
++import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
++import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
++import { motion } from 'framer-motion';
++import './Skills.css';
++
++const Skills = () => {
++  // Skills data with categories and proficiency levels
++  const skillsData = [
++    {
++      category: 'Frontend',
++      skills: [
++        { name: 'HTML5 & CSS3', proficiency: 90 },
++        { name: 'JavaScript (ES6+)', proficiency: 85 },
++        { name: 'React.js', proficiency: 85 },
++        { name: 'Redux', proficiency: 80 },
++        { name: 'Responsive Design', proficiency: 90 },
++        { name: 'Material UI', proficiency: 75 }
++      ]
++    },
++    {
++      category: 'Backend',
++      skills: [
++        { name: 'Node.js', proficiency: 80 },
++        { name: 'Express.js', proficiency: 85 },
++        { name: 'MongoDB', proficiency: 80 },
++        { name: 'RESTful APIs', proficiency: 85 },
++        { name: 'GraphQL', proficiency: 70 },
++        { name: 'Firebase', proficiency: 75 }
++      ]
++    },
++    {
++      category: 'Tools & Others',
++      skills: [
++        { name: 'Git & GitHub', proficiency: 85 },
++        { name: 'Webpack', proficiency: 75 },
++        { name: 'Jest & Testing Library', proficiency: 70 },
++        { name: 'Docker', proficiency: 65 },
++        { name: 'AWS', proficiency: 60 },
++        { name: 'Agile Methodology', proficiency: 80 }
++      ]
++    }
++  ];
++
++  return (
++    <section id="skills" className="skills">
++      <motion.h2 
++        className="section-title"
++        initial={{ opacity: 0, y: 20 }}
++        whileInView={{ opacity: 1, y: 0 }}
++        viewport={{ once: true }}
++        transition={{ duration: 0.5 }}
++      >
++        Skills & Technologies
++      </motion.h2>
++      
++      <div className="skills-container">
++        {skillsData.map((category, categoryIndex) => (
++          <motion.div 
++            key={categoryIndex} 
++            className="skills-category"
++            initial={{ opacity: 0, y: 30 }}
++            whileInView={{ opacity: 1, y: 0 }}
++            viewport={{ once: true }}
++            transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
++          >
++            <h3 className="skills-category-title">{category.category}</h3>
++            <ul className="skills-list">
++              {category.skills.map((skill, skillIndex) => (
++                <SkillItem 
++                  key={skillIndex} 
++                  skill={skill} 
++                  delay={skillIndex * 0.1} 
++                />
++              ))}
++            </ul>
++          </motion.div>
++        ))}
++      </div>
++    </section>
++  );
++};
++
++// Individual skill item component with animation
++const SkillItem = ({ skill, delay }) => {
++  return (
++    <motion.li 
++      className="skill-item"
++      initial={{ opacity: 0, x: -20 }}
++      whileInView={{ opacity: 1, x: 0 }}
++      viewport={{ once: true }}
++      transition={{ duration: 0.3, delay }}
++    >
++      <FontAwesomeIcon icon={faAngleRight} className="skill-icon" />
++      <div style={{ width: '100%' }}>
++        <div className="skill-name">{skill.name}</div>
++        <div className="skill-progress-container">
++          <motion.div 
++            className="skill-progress-bar"
++            initial={{ width: 0 }}
++            whileInView={{ width: `${skill.proficiency}%` }}
++            viewport={{ once: true }}
++            transition={{ duration: 1, delay: delay + 0.3 }}
++          />
++        </div>
++      </div>
++    </motion.li>
++  );
++};
++
++export default Skills;
+```
+
+```diff
+--- /dev/null
++++ src/components/Projects/Projects.css
+@@ -0,0 +1,127 @@
++.projects {
++  display: flex;
++  flex-direction: column;
++}
++
++.projects-container {
++  display: grid;
++  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
++  gap: 30px;
++}
++
++.project-card {
++  background-color: #112240;
++  border-radius: 5px;
++  padding: 25px;
++  transition: transform 0.3s ease, box-shadow 0.3s ease;
++  height: 100%;
++  display: flex;
++  flex-direction: column;
++  position: relative;
++  overflow: hidden;
++}
++
++.project-card:hover {
++  transform: translateY(-10px);
++  box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
++}
++
++.project-card:hover .project-image {
++  opacity: 0.1;
++}
++
++.project-card:hover .project-content {
++  opacity: 1;
++}
++
++.project-top {
++  display: flex;
++  justify-content: space-between;
++  align-items: center;
++  margin-bottom: 20px;
++}
++
++.project-folder {
++  color: #64ffda;
++  font-size: 40px;
++}
++
++.project-links {
++  display: flex;
++  gap: 15px;
++}
++
++.project-link {
++  color: #a8b2d1;
++  font-size: 20px;
++  transition: color 0.3s ease;
++}
++
++.project-link:hover {
++  color: #64ffda;
++}
++
++.project-title {
++  font-size: 20px;
++  font-weight: 600;
++  color: #e6f1ff;
++  margin-bottom: 10px;
++  transition: color 0.3s ease;
++}
++
++.project-card:hover .project-title {
++  color: #64ffda;
++}
++
++.project-description {
++  color: #a8b2d1;
++  font-size: 14px;
++  line-height: 1.6;
++  margin-bottom: 20px;
++  flex-grow: 1;
++}
++
++.project-tech {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 10px;
++  margin-top: auto;
++}
++
++.project-tech-item {
++  color: #8892b0;
++  font-size: 12px;
++  font-family: monospace;
++}
++
++.featured-project {
++  display: grid;
++  grid-template-columns: repeat(12, 1fr);
++  gap: 10px;
++  margin-bottom: 100px;
++  position: relative;
++}
++
++.featured-project-image {
++  grid-column: 1 / 8;
++  grid-row: 1 / -1;
++  position: relative;
++  height: 400px;
++  border-radius: 5px;
++  overflow: hidden;
++}
++
++.featured-project-image img {
++  width: 100%;
++  height: 100%;
++  object-fit: cover;
++  filter: grayscale(100%) contrast(1);
++  transition: filter 0.3s ease;
++}
++
++@media (max-width: 768px) {
++  .featured-project {
++    display: block;
++  }
++  .featured-project-image {
++    height: 300px;
++  }
++}
+```
+
+```diff
+--- /dev/null
++++ src/components/Projects/ProjectsDEBUG: Checking files after AI processing...
+FILES PRESENT AFTER AI: ['index.html', 'package.json', 'src\\\\App.css', 'src\\\\App.js', 'src\\\\components\\\\Header\\\\Header.css', 'src\\\\components\\\\Header\\\\Header.js', 'src\\\\components\\\\Hero\\\\Hero.css', 'src\\\\components\\\\Hero\\\\Hero.js', 'src\\\\index.css', 'src\\\\index.js']
+Skipping invalid file reference: /dev/null
+Skipping invalid file reference: /dev/null
+Skipping invalid file reference: /dev/null
+Skipping invalid file reference: /dev/null
+Skipping invalid file reference: /dev/null
+DEBUG: Checking files after salvage_correct_hunks...
+FINAL FILES DICT: ['index.html', 'package.json', 'src\\\\App.css', 'src\\\\App.js', 'src\\\\components\\\\Header\\\\Header.css', 'src\\\\components\\\\Header\\\\Header.js', 'src\\\\components\\\\Hero\\\\Hero.css', 'src\\\\components\\\\Hero\\\\Hero.js', 'src\\\\index.css', 'src\\\\index.js', 'src/components/About/About.css', 'src/components/About/About.js', 'src/components/Skills/Skills.css', 'src/components/Skills/Skills.js', 'src/components/Projects/Projects.css']
+
