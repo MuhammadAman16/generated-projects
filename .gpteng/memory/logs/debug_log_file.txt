@@ -1,0 +1,813 @@
+
+2025-03-24T17:00:12.529578
+UPLOADED FILES:
+File: package.json
+{
+  "name": "portfolio-website",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "framer-motion": "^10.12.16",
+    "lucide-react": "^0.244.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
+    "react-router-dom": "^6.12.1",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
+  }
+}
+File: postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+File: public\\index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Professional portfolio website showcasing projects and skills"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <title>Portfolio | Your Name</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+File: run.sh
+#!/bin/bash
+
+# Create the script file
+cat > run_portfolio.sh << 'EOF'
+#!/bin/bash
+
+# Install dependencies
+echo "Installing dependencies..."
+npm install
+
+# Run the application
+echo "Starting the application..."
+npm start
+EOF
+
+# Make the script executable
+chmod +x run_portfolio.sh
+
+# Run the script
+./run_portfolio.sh
+
+File: src\\App.js
+import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import { ThemeProvider } from './context/ThemeContext';
+import LoadingSpinner from './components/ui/LoadingSpinner';
+
+// Lazy load components for better performance
+const Home = lazy(() => import('./pages/Home'));
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  return (
+    <ThemeProvider>
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow">
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              {/* Add more routes as needed */}
+            </Routes>
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
+  );
+}
+
+export default App;
+File: src\\components\\Navbar.js
+import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Menu, X, Moon, Sun } from 'lucide-react';
+import { ThemeContext } from '../context/ThemeContext';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+  
+  // Handle scroll event to change navbar appearance
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Home', href: '#hero' },
+    { name: 'About', href: '#about' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Experience', href: '#experience' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  return (
+    <header 
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/90 dark:bg-secondary-900/90 backdrop-blur-sm shadow-md' 
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4 md:py-6">
+          {/* Logo */}
+          <Link 
+            to="/" 
+            className="text-2xl font-bold text-primary-600 dark:text-primary-400"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            Portfolio
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-secondary-600 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              >
+                {link.name}
+              </a>
+            ))}
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-full bg-secondary-100 dark:bg-secondary-800 text-secondary-600 dark:text-secondary-300"
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+          </nav>
+
+          {/* Mobile Navigation Toggle */}
+          <div className="flex items-center md:hidden">
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 mr-2 rounded-full bg-secondary-100 dark:bg-secondary-800 text-secondary-600 dark:text-secondary-300"
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-md text-secondary-600 dark:text-secondary-300"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white dark:bg-secondary-900 shadow-lg"
+          >
+            <div className="px-4 py-2 space-y-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="block py-3 text-secondary-600 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+};
+
+export default Navbar;
+File: src\\components\\ui\\LoadingSpinner.js
+import React from 'react';
+
+const LoadingSpinner = () => {
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="w-12 h-12 border-4 border-primary-200 rounded-full border-t-primary-600 animate-spin"></div>
+    </div>
+  );
+};
+
+export default LoadingSpinner;
+File: src\\context\\ThemeContext.js
+import React, { createContext, useState, useEffect } from 'react';
+
+export const ThemeContext = createContext();
+
+export const ThemeProvider = ({ children }) => {
+  // Check if user has a theme preference in localStorage or prefers dark mode
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  // Update the theme when darkMode changes
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  // Toggle between light and dark mode
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  return (
+    <ThemeContext.Provider value={{ darkMode, toggleDarkMode }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+File: src\\index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white dark:bg-secondary-900 text-secondary-900 dark:text-white transition-colors duration-300;
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold mb-8 text-center;
+  }
+  
+  .section-subtitle {
+    @apply text-xl text-secondary-600 dark:text-secondary-400 mb-12 text-center max-w-3xl mx-auto;
+  }
+  
+  .btn {
+    @apply px-6 py-3 rounded-md font-medium transition-all duration-300 inline-flex items-center justify-center;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary-200 dark:bg-secondary-800 hover:bg-secondary-300 dark:hover:bg-secondary-700 text-secondary-900 dark:text-white;
+  }
+  
+  .btn-outline {
+    @apply border border-primary-600 text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20;
+  }
+}
+File: src\\index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);
+File: tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+        },
+        secondary: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        mono: ['Fira Code', 'monospace'],
+      },
+    },
+  },
+  plugins: [],
+}
+
+PROMPT:
+create the remaining components
+
+2025-03-24T17:01:04.925544
+
+CONSOLE OUTPUT:
+DEBUG: Checking available files before improvement...
+FILES PRESENT: ['package.json', 'postcss.config.js', 'public\\\\index.html', 'run.sh', 'src\\\\App.js', 'src\\\\components\\\\Navbar.js', 'src\\\\components\\\\ui\\\\LoadingSpinner.js', 'src\\\\context\\\\ThemeContext.js', 'src\\\\index.css', 'src\\\\index.js', 'tailwind.config.js']
+I'll create the remaining components for your portfolio website, including the Home page, Footer, and other necessary sections like About, Projects, Experience, and Contact.
+
+Let's start with implementing these components one by one:
+
+```diff
+--- /dev/null
++++ src/pages/Home.js
+@@ -0,0 +1,31 @@
++import React from 'react';
++import Hero from '../components/sections/Hero';
++import About from '../components/sections/About';
++import Projects from '../components/sections/Projects';
++import Experience from '../components/sections/Experience';
++import Contact from '../components/sections/Contact';
++import Skills from '../components/sections/Skills';
++import Testimonials from '../components/sections/Testimonials';
++
++/**
++ * Home page component that combines all sections of the portfolio
++ */
++const Home = () => {
++  return (
++    <div className="pt-16">
++      {/* Main sections */}
++      <Hero />
++      <About />
++      <Skills />
++      <Projects />
++      <Experience />
++      <Testimonials />
++      <Contact />
++      
++      {/* Back to top button could be added here */}
++    </div>
++  );
++};
++
++export default Home;
+```
+
+```diff
+--- /dev/null
++++ src/components/Footer.js
+@@ -0,0 +1,60 @@
++import React from 'react';
++import { Github, Linkedin, Twitter, Mail } from 'lucide-react';
++
++/**
++ * Footer component with social links and copyright information
++ */
++const Footer = () => {
++  const currentYear = new Date().getFullYear();
++  
++  // Social media links
++  const socialLinks = [
++    { 
++      name: 'GitHub', 
++      icon: <Github size={20} />, 
++      url: 'https://github.com/yourusername' 
++    },
++    { 
++      name: 'LinkedIn', 
++      icon: <Linkedin size={20} />, 
++      url: 'https://linkedin.com/in/yourusername' 
++    },
++    { 
++      name: 'Twitter', 
++      icon: <Twitter size={20} />, 
++      url: 'https://twitter.com/yourusername' 
++    },
++    { 
++      name: 'Email', 
++      icon: <Mail size={20} />, 
++      url: 'mailto:your.email@example.com' 
++    },
++  ];
++
++  return (
++    <footer className="bg-secondary-100 dark:bg-secondary-800 py-8">
++      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
++        <div className="flex flex-col md:flex-row justify-between items-center">
++          <div className="mb-4 md:mb-0">
++            <p className="text-secondary-600 dark:text-secondary-400">
++              © {currentYear} Your Name. All rights reserved.
++            </p>
++          </div>
++          
++          <div className="flex space-x-4">
++            {socialLinks.map((link) => (
++              <a 
++                key={link.name}
++                href={link.url}
++                target="_blank"
++                rel="noopener noreferrer"
++                className="text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
++                aria-label={link.name}
++              >
++                {link.icon}
++              </a>
++            ))}
++          </div>
++        </div>
++      </div>
++    </footer>
++  );
++};
++
++export default Footer;
+```
+
+Now let's create the section components:
+
+```diff
+--- /dev/null
++++ src/components/sections/Hero.js
+@@ -0,0 +1,59 @@
++import React from 'react';
++import { motion } from 'framer-motion';
++import { ArrowRight, Download } from 'lucide-react';
++
++/**
++ * Hero section component for the landing page
++ */
++const Hero = () => {
++  return (
++    <section id="hero" className="min-h-screen flex items-center relative overflow-hidden">
++      {/* Background gradient */}
++      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-white dark:from-secondary-900 dark:to-secondary-800 -z-10"></div>
++      
++      {/* Content container */}
++      <div className="section-container">
++        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
++          {/* Text content */}
++          <motion.div
++            initial={{ opacity: 0, y: 20 }}
++            animate={{ opacity: 1, y: 0 }}
++            transition={{ duration: 0.5 }}
++          >
++            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
++              <span className="text-primary-600 dark:text-primary-400">Hello, I'm</span>
++              <br />
++              Your Name
++            </h1>
++            <h2 className="text-2xl md:text-3xl text-secondary-600 dark:text-secondary-300 mb-6">
++              Full Stack Developer
++            </h2>
++            <p className="text-lg mb-8 max-w-lg text-secondary-600 dark:text-secondary-400">
++              I build exceptional digital experiences that are fast, accessible, visually appealing, and responsive.
++            </p>
++            
++            <div className="flex flex-wrap gap-4">
++              <a href="#contact" className="btn btn-primary">
++                Contact Me <ArrowRight size={18} className="ml-2" />
++              </a>
++              <a href="/resume.pdf" download className="btn btn-outline">
++                Download CV <Download size={18} className="ml-2" />
++              </a>
++            </div>
++          </motion.div>
++          
++          {/* Hero image */}
++          <motion.div
++            initial={{ opacity: 0, scale: 0.9 }}
++            animate={{ opacity: 1, scale: 1 }}
++            transition={{ duration: 0.5, delay: 0.2 }}
++            className="flex justify-center"
++          >
++            <img src="https://source.unsplash.com/random/600x600/?portrait" alt="Developer" className="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover border-4 border-white dark:border-secondary-700 shadow-lg" />
++          </motion.div>
++        </div>
++      </div>
++    </section>
++  );
++};
++
++export default Hero;
+```
+
+```diff
+--- /dev/null
++++ src/components/sections/About.js
+@@ -0,0 +1,67 @@
++import React from 'react';
++import { motion } from 'framer-motion';
++import { Code, Briefcase, GraduationCap } from 'lucide-react';
++
++/**
++ * About section component with personal information
++ */
++const About = () => {
++  // Define key facts about yourself
++  const keyFacts = [
++    {
++      icon: <Code size={24} />,
++      title: "Developer",
++      description: "5+ years of experience in full-stack development with a focus on modern web technologies."
++    },
++    {
++      icon: <Briefcase size={24} />,
++      title: "Experience",
++      description: "Worked with startups and established companies to deliver high-quality software solutions."
++    },
++    {
++      icon: <GraduationCap size={24} />,
++      title: "Education",
++      description: "Bachelor's degree in Computer Science with continuous learning through courses and certifications."
++    }
++  ];
++
++  return (
++    <section id="about" className="py-20 bg-white dark:bg-secondary-900">
++      <div className="section-container">
++        <motion.div
++          initial={{ opacity: 0, y: 20 }}
++          whileInView={{ opacity: 1, y: 0 }}
++          viewport={{ once: true }}
++          transition={{ duration: 0.5 }}
++        >
++          <h2 className="section-title">About Me</h2>
++          <p className="section-subtitle">Here's a brief introduction about who I am and what I do</p>
++        </motion.div>
++
++        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-12">
++          {/* About image */}
++          <motion.div
++            initial={{ opacity: 0, x: -20 }}
++            whileInView={{ opacity: 1, x: 0 }}
++            viewport={{ once: true }}
++            transition={{ duration: 0.5, delay: 0.2 }}
++          >
++            <img src="https://source.unsplash.com/random/600x800/?workspace" alt="My workspace" className="rounded-lg shadow-lg w-full h-auto" />
++          </motion.div>
++
++          {/* About content */}
++          <motion.div
++            initial={{ opacity: 0, x: 20 }}
++            whileInView={{ opacity: 1, x: 0 }}
++            viewport={{ once: true }}
++            transition={{ duration: 0.5, delay: 0.2 }}
++          >
++            <p className="text-lg mb-6 text-secondary-700 dark:text-secondary-300">I'm a passionate full-stack developer with expertise in building modern web applications. I love solving complex problems and creating intuitive user experiences.</p>
++            <p className="text-lg mb-8 text-secondary-700 dark:text-secondary-300">When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or enjoying outdoor activities.</p>
++            
++            {/* Key facts */}
++            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
++              {keyFacts.map((fact, index) => (
++                <div key={index} className="bg-secondary-50 dark:bg-secondary-800 p-6 rounded-lg">
++                  <div className="text-primary-600 dark:text-primary-400 mb-3">{fact.icon}</div>
++                  <h3 className="text-xl font-semibold mb-2">{fact.title}</h3>
++                  <p className="text-secondary-600 dark:text-secondary-400">{fact.description}</p>
++                </div>
++              ))}
++            </div>
++          </motion.div>
++        </div>
++      </div>
++    </section>
++  );
++};
++
++export default About;
+```
+
+```diff
+--- /dev/null
++++ src/components/sections/Skills.js
+@@ -0,0 +1,109 @@
++import React from 'react';
++import { motion } from 'framer-motion';
++
++/**
++ * Skills section component to showcase technical abilities
++ */
++const Skills = () => {
++  // Define skill categories
++  const skillCategories = [
++    {
++      title: "Frontend",
++      skills: [
++        { name: "React", level: 90 },
++        { name: "JavaScript", level: 85 },
++        { name: "TypeScript", level: 80 },
++        { name: "HTML/CSS", level: 90 },
++        { name: "Tailwind CSS", level: 85 },
++      ]
++    },
++    {
++      title: "Backend",
++      skills: [
++        { name: "Node.js", level: 85 },
++        { name: "Express", level: 80 },
++        { name: "Python", level: 75 },
++        { name: "Django", level: 70 },
++        { name: "RESTful APIs", level: 85 },
++      ]
++    },
++    {
++      title: "Other",
++      skills: [
++        { name: "Git", level: 85 },
++        { name: "Docker", level: 70 },
++        { name: "AWS", level: 65 },
++        { name: "Testing", level: 75 },
++        { name: "UI/UX Design", level: 70 },
++      ]
++    }
++  ];
++
++  // Animation variants
++  const containerVariants = {
++    hidden: { opacity: 0 },
++    visible: {
++      opacity: 1,
++      transition: {
++        staggerChildren: 0.1
++      }
++    }
++  };
++
++  const itemVariants = {
++    hidden: { y: 20, opacity: 0 },
++    visible: {
++      y: 0,
++      opacity: 1
++    }
++  };
++
++  return (
++    <section id="skills" className="py-20 bg-secondary-50 dark:bg-secondary-800">
++      <div className="section-container">
++        <motion.div
++          initial={{ opacity: 0, y: 20 }}
++          whileInView={{ opacity: 1, y: 0 }}
++          viewport={{ once: true }}
++          transition={{ duration: 0.5 }}
++        >
++          <h2 className="section-title">My Skills</h2>
++          <p className="section-subtitle">Here are the technologies and tools I work with</p>
++        </motion.div>
++
++        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
++          {skillCategories.map((category, categoryIndex) => (
++            <motion.div
++              key={categoryIndex}
++              className="bg-white dark:bg-secondary-900 rounded-lg shadow-md p-6"
++              initial={{ opacity: 0, y: 20 }}
++              whileInView={{ opacity: 1, y: 0 }}
++              viewport={{ once: true }}
++              transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
++            >
++              <h3 className="text-xl font-semibold mb-6 text-primary-600 dark:text-primary-400">{category.title}</h3>
++              
++              <motion.div
++                variants={containerVariants}
++                initial="hidden"
++                whileInView="visible"
++                viewport={{ once: true }}
++              >
++                {category.skills.map((skill, skillIndex) => (
++                  <motion.div key={skillIndex} className="mb-4" variants={itemVariants}>
++                    <div className="flex justify-between mb-1">
++                      <span className="font-medium text-secondary-700 dark:text-secondary-300">{skill.name}</span>
++                      <span className="text-secondary-500 dark:text-secondary-400">{skill.level}%</span>
++                    </div>
++                    <div className="w-full bg-secondary-200 dark:bg-secondary-700 rounded-full h-2.5">
++                      <div className="bg-primary-600 dark:bg-primary-500 h-2.5 rounded-full" style={{ width: `${skill.level}%` }}></div>
++                    </div>
++                  </motion.div>
++                DEBUG: Checking files after AI processing...
+FILES PRESENT AFTER AI: ['package.json', 'postcss.config.js', 'public\\\\index.html', 'run.sh', 'src\\\\App.js', 'src\\\\components\\\\Navbar.js', 'src\\\\components\\\\ui\\\\LoadingSpinner.js', 'src\\\\context\\\\ThemeContext.js', 'src\\\\index.css', 'src\\\\index.js', 'tailwind.config.js']
+gpt-engineer timed out while parsing git diff
+Skipping invalid file reference: /dev/null
+Skipping invalid file reference: /dev/null
+Skipping invalid file reference: /dev/null
+Skipping invalid file reference: /dev/null
+DEBUG: Checking files after salvage_correct_hunks...
+FINAL FILES DICT: ['package.json', 'postcss.config.js', 'public\\\\index.html', 'run.sh', 'src\\\\App.js', 'src\\\\components\\\\Navbar.js', 'src\\\\components\\\\ui\\\\LoadingSpinner.js', 'src\\\\context\\\\ThemeContext.js', 'src\\\\index.css', 'src\\\\index.js', 'tailwind.config.js', 'src/pages/Home.js', 'src/components/Footer.js', 'src/components/sections/Hero.js', 'src/components/sections/About.js']
+
